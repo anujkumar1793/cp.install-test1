@@ -1,0 +1,32 @@
+# Function to check if the Company Portal is installed
+function Check-CompanyPortal {
+    $companyPortal = Get-AppxPackage -Name "Microsoft.CompanyPortal" -ErrorAction SilentlyContinue
+
+    if ($companyPortal) {
+        Write-Host "Company Portal is already installed."
+        return $true
+    } else {
+        Write-Host "Company Portal is not installed."
+        return $false
+    }
+}
+
+# Function to install Company Portal via Microsoft Store
+function Install-CompanyPortal {
+    Write-Host "Opening Microsoft Store to install Company Portal..."
+
+    # Open Microsoft Store directly to the Company Portal app page
+    Start-Process -FilePath "ms-windows-store://pdp/?productid=9wzdncrfj3pz"
+
+    Write-Host "Please follow the prompts in the Microsoft Store to complete the installation."
+}
+
+# Main logic
+if (-not (Check-CompanyPortal)) {
+    Install-CompanyPortal
+} else {
+    Write-Host "No installation necessary. Company Portal is already installed."
+}
+
+# Exit script
+Exit 0
