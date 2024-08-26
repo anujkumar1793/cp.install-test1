@@ -1,0 +1,17 @@
+# Check if Winget is installed
+if (Get-Command "winget" -ErrorAction SilentlyContinue) {
+    Write-Host "Winget found. Installing Company Portal..."
+ 
+    # Install Company Portal using winget
+    winget install --id Microsoft.CompanyPortal -e --silent
+ 
+    # Verify installation
+    $companyPortal = Get-AppxPackage -Name "Microsoft.CompanyPortal" -ErrorAction SilentlyContinue
+    if ($companyPortal) {
+        Write-Host "Company Portal has been successfully installed."
+    } else {
+        Write-Host "Installation failed or Company Portal is not detected."
+    }
+} else {
+    Write-Host "Winget is not installed. Please ensure that Windows Package Manager (winget) is available on your system."
+}
