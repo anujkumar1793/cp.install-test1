@@ -1,0 +1,34 @@
+# Define the URL for the Company Portal installer
+$companyPortalUrl = "https://go.microsoft.com/fwlink/?linkid=862280"
+ 
+# Define the path where the installer will be downloaded
+$installerPath = "$env:TEMP\CompanyPortalInstaller.exe"
+ 
+# Download the installer
+Write-Host "Downloading Company Portal installer..."
+Invoke-WebRequest -Uri $companyPortalUrl -OutFile $installerPath
+ 
+# Check if the installer was downloaded successfully
+if (Test-Path $installerPath) {
+    Write-Host "Installer downloaded successfully."
+ 
+    # Install the Company Portal silently
+    Write-Host "Installing Company Portal..."
+    Start-Process -FilePath $installerPath -ArgumentList "/silent", "/norestart" -Wait
+ 
+    # Check if the installation was successful
+    $companyPortalPath = "C:\Program Files\WindowsApps\Microsoft.CompanyPortal_*\AppxManifest.xml"
+    if (Test-Path $companyPortalPath) {
+        Write-Host "Company Portal installed successfully."
+    } else {
+        Write-Host "Installation failed."
+    }
+ 
+    # Cleanup: Remove the installer file
+    Remove-Item -Path $installerPath -Force
+    Write-Host "Installer file removed."
+} else {
+    Write-Host "Failed to download the installer."
+}
+
+has context menu
